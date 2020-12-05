@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEATHER</title>
+    <style>
+        body{
+            background-image: url("https://www.princeton.edu/sites/default/files/styles/half_2x/public/images/2018/01/clouds-19.jpg?itok=Qfa5j6NW://wi-images.condecdn.net/image/xx34kJjvl1d/crop/405/f/iStock-620368474.jpg");
+            align-items: center;
+        }
+        .div1{
+            width:400px;
+            height:300px;
+            margin:10px auto;
+            box-shadow: 5px 5px 23px #8a8686 ,-5px -5px 23px #2e2e2d70;
+            background-color: gray;
+            opacity: 0.7;
+            text-align: center;
+            z-index:100;
+        }
+        .card1{
+            margin:50px auto;
+            text-align: left;
+            color:white;
+            padding:8px;
+            z-index:8;
+        }
+        .div1:hover{
+            transition: all 0.5s ease-in;
+            transform:translateY(10px);
+            box-shadow: 5px 5px 23px #1695cf inset ,-5px -5px 23px #2e2e2d70 inset;
+        }
+        button{
+            border:transparent;
+            background-color: white;
+            opacity:0.7;
+        }
+        button:hover{
+            transition: all 0.5s ease-in;
+            box-shadow: 5px 5px 23px #1695cf inset ,-5px -5px 23px #2e2e2d70 inset;
+        }
+        input{
+            border:transparent;
+            background-color: white;
+            opacity:0.7;
+        }
+        input:hover{
+            transition: all 0.5s ease-in;
+            box-shadow: 5px 5px 23px #1695cf inset ,-5px -5px 23px #2e2e2d70 inset;
+        }
+            @keyframes move-background {
+        from {
+            -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to { 
+            -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+        }
+        @-webkit-keyframes move-background {
+        from {
+            -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to { 
+            -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+        }
+
+        @-moz-keyframes move-background {    
+        from {
+            -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to { 
+            -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+        }
+
+        @-webkit-keyframes move-background {
+        from {
+            -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to { 
+            -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+        }
+
+        .background-container{
+        position: fixed;
+        top: 0;
+        left:0;
+        bottom: 0;
+        right: 0;
+        }
+
+        .stars {
+        background: black url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        z-index: 0;
+        }
+
+        .twinkling{
+        width:10000px;
+        height: 100%;
+        background: transparent url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png") repeat;
+        background-size: 1000px 1000px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+
+        -moz-animation:move-background 70s linear infinite;
+        -ms-animation:move-background 70s linear infinite;
+        -o-animation:move-background 70s linear infinite;
+        -webkit-animation:move-background 70s linear infinite;
+        animation:move-background 70s linear infinite;
+
+        }
+
+        .clouds{
+        width:10000px;
+        height: 100%;
+        background: transparent url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/clouds_repeat.png") repeat;
+        background-size: 1000px 1000px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 3;
+
+        -moz-animation:move-background 50s linear infinite;
+        -ms-animation:move-background 50s linear infinite;
+        -o-animation:move-background 50s linear infinite;
+        -webkit-animation:move-background 50s linear infinite;
+        animation:move-background 50s linear infinite;
+        }
+        .img{
+        height: 70vh;
+        width:70vh;
+        position: absolute;
+        z-index: 3;
+        right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" class="img">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div>
+    <div style="margin:10px auto;text-align: center;">
+        <input type="text" value="location" id="loc"/>
+        <button id="btn1">CHECK WEATHER</button>
+    </div>
+    <div class="div1" id="card"></div>
+
+    <script>
+        document.getElementById("btn1").addEventListener("click", loadText);
+        function loadText(){
+            var location = document.getElementById("loc").value 
+            xhr = new XMLHttpRequest();
+            var url = "http://api.weatherapi.com/v1/current.json?key=eaf637c4cbae4cdba70150833200312&q="+location;
+            xhr.open("GET", url)
+            xhr.onload= function(){
+                var data = JSON.parse(xhr.responseText)
+                console.log(data)
+                if(xhr.status === 200){
+                            var html=""
+                            html+= `<div class="card1">
+                            <p class="para"> ${"City: "}${data.location.name}</p>
+                            <p class="para"> ${"Country: "}${data.location.country}</p>
+                            <p class="para"> ${"Lat: "}${data.location.lat}</p>
+                            <p class="para"> ${"Lon: "}${data.location.lon}</p>
+                            <p class="para"> ${"Temperature in C: "}${data.current.temp_c}</p>
+                            <p class="para"> ${"Condition: "}${data.current.condition.text}</p>
+                            <img src="https:${data.current.condition.icon}"/></div>`
+                            console.log(html)
+                    
+                }
+                document.getElementById("card").innerHTML = html
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
